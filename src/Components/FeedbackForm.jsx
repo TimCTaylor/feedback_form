@@ -6,7 +6,8 @@ const FeedbackForm = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        feedback: ''
+        feedback: '',
+        rating: ''
     });
 
     const handleChange = (event) => {
@@ -29,12 +30,13 @@ const FeedbackForm = () => {
     // The button element is type="submit" and so triggers the onSubmit event
     // (a button element inside a <form> is submit type by default, but I like the code clarity)
     const handleSubmit = (event) => {
-        event.preventDefault();
+        event.preventDefault(); // We do the handling ourselves. This is a common pattern.
 
         const confirmationMessage = `
             Name: ${formData.name}
             Email: ${formData.email}
             Feedback: ${formData.feedback}
+            Rating: ${formData.rating}
         `;
 
         const isConfirmed = window.confirm(`Please confirm your details:\n\n${confirmationMessage}`);
@@ -43,12 +45,17 @@ const FeedbackForm = () => {
             setFormData({
                 name: '',
                 email: '',
-                feedback: ''
+                feedback: '',
+                rating: ''
             });
             alert('Thank you for your valuable feedback!');
         }
     };
     
+    //Note the addition of a div with radio buttons. The buttons all have the same name but
+    // different values. I didn't need to make any changes to the existing handleChange function
+    // because it simply spreads the existing formData and updates the name-value pair passed to it.
+    // Also, note I've wrapped the radio buttons inside a <label> Otherwise, I couldn't get the buttons and the labels to line up.
     return (
         <>
         <nav>
@@ -78,6 +85,14 @@ const FeedbackForm = () => {
             onChange={handleChange}
             ></textarea>
 
+            <div style={{display:'flex',gap:'10px',flexDirection:'column'}}> Rate Us:
+                <label>1 <input type="radio" name="rating" value="1" onChange={handleChange} /></label>
+                <label>2 <input type="radio" name="rating" value="2" onChange={handleChange} /></label>
+                <label>3 <input type="radio" name="rating" value="3" onChange={handleChange} /></label>
+                <label>4 <input type="radio" name="rating" value="4" onChange={handleChange} /></label>
+                <label>5 <input type="radio" name="rating" value="5" onChange={handleChange} /></label>
+                
+            </div>
             <button type="submit">Submit Feedback</button>
         </form>
         </>
